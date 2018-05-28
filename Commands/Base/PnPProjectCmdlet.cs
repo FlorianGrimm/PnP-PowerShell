@@ -12,35 +12,41 @@ using System.Diagnostics;
 
 namespace SharePointPnP.PowerShell.Commands
 {
-    public class PnPCmdlet : PSCmdlet
+    public class PnPProjectCmdlet : PSCmdlet
     {
-        public SPOnlineConnection CurrentConnection => Connection ?? SPOnlineConnection.CurrentConnection;
-
-        public ClientContext ClientContext => CurrentConnection?.Context;
-
         [Parameter(Mandatory = false, HelpMessage = "Optional connection to be used by the cmdlet. Retrieve the value for this parameter by either specifying -ReturnConnection on Connect-PnPOnline or by executing Get-PnPConnection.")] // do not remove '#!#99'
         [PnPParameter(Order = 99)]
         public SPOnlineConnection Connection = null;
 
+        public SPOnlineConnection CurrentConnection => Connection ?? SPOnlineConnection.CurrentConnection;
+
+        public ClientContext ClientContext => CurrentConnection?.Context;
+
+        public ClientContext ClientProjectContext => _ClientProjectContext ?? CurrentConnection?.ProjectContext;
+
+        private ClientContext _ClientProjectContext;
+
         protected override void BeginProcessing()
         {
             base.BeginProcessing();
-
-            CurrentConnection?.TelemetryClient?.TrackEvent(MyInvocation.MyCommand.Name);
-
+            Connection?.TelemetryClient?.TrackEvent(MyInvocation.MyCommand.Name);
             if (MyInvocation.InvocationName.ToUpper().IndexOf("-SPO", StringComparison.Ordinal) > -1)
             {
                 WriteWarning($"PnP Cmdlets starting with the SPO Prefix will be deprecated in the June 2017 release. Please update your scripts and use {MyInvocation.MyCommand.Name} instead.");
             }
-            if (Connection == null)
+            if (ClientProjectContext == null)
+            {
+                if (Connection == null)
+                {
+                    throw new InvalidOperationException(Resources.NoConnection);
+                }
+                _ClientProjectContext = ClientContext.CloneAsProjectContext(ClientContext.Url);
+            }
+            if (ClientProjectContext == null)
             {
                 throw new InvalidOperationException(Resources.NoConnection);
             }
-            if (ClientContext == null)
-            {
-                throw new InvalidOperationException(Resources.NoConnection);
-            }
-            if (CurrentConnection.ConnectionMethod == Model.ConnectionMethod.GraphDeviceLogin)
+            if (Connection.ConnectionMethod == Model.ConnectionMethod.GraphDeviceLogin)
             {
                 throw new InvalidOperationException(Resources.NoConnection);
             }
@@ -51,7 +57,7 @@ namespace SharePointPnP.PowerShell.Commands
 
         protected override void ProcessRecord()
         {
-            var connection = CurrentConnection;
+            var connection = Connection;
             try
             {
                 if (connection.MinimalHealthScore != -1)
@@ -78,7 +84,11 @@ namespace SharePointPnP.PowerShell.Commands
                                     {
                                         tag = tag.Substring(0, 32);
                                     }
-                                    ClientContext.ClientTag = tag;
+                                    if (ClientContext != null)
+                                    {
+                                        ClientContext.ClientTag = tag;
+                                    }
+                                    ClientProjectContext.ClientTag = tag;
 
 
                                     ExecuteCmdlet();
@@ -104,7 +114,11 @@ namespace SharePointPnP.PowerShell.Commands
                     {
                         tag = tag.Substring(0, 32);
                     }
-                    ClientContext.ClientTag = tag;
+                    if (ClientContext != null)
+                    {
+                        ClientContext.ClientTag = tag;
+                    }
+                    ClientProjectContext.ClientTag = tag;
 
                     ExecuteCmdlet();
                 }
@@ -115,7 +129,6 @@ namespace SharePointPnP.PowerShell.Commands
             }
             catch (Exception ex)
             {
-                //SPOnlineConnection.CurrentConnection.RestoreCachedContext(SPOnlineConnection.CurrentConnection.Url);
                 connection.RestoreCachedContext(connection.Url);
                 WriteError(new ErrorRecord(ex, "EXCEPTION", ErrorCategory.WriteError, null));
             }

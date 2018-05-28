@@ -2,6 +2,7 @@
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Identity.Client;
 using Microsoft.SharePoint.Client;
+using Microsoft.ProjectServer.Client;
 using Newtonsoft.Json;
 using SharePointPnP.PowerShell.Commands.Enums;
 using SharePointPnP.PowerShell.Commands.Model;
@@ -25,6 +26,7 @@ namespace SharePointPnP.PowerShell.Commands.Base
         internal ConnectionMethod ConnectionMethod { get; set; }
         internal string PnPVersionTag { get; set; }
         internal static List<ClientContext> ContextCache { get; set; }
+        internal static List<ProjectContext> ProjectContextCache { get; set; }
 
         public static AuthenticationResult AuthenticationResult { get; set; }
         public static TokenResult TokenResult { get; set; }
@@ -42,10 +44,9 @@ namespace SharePointPnP.PowerShell.Commands.Base
         public string TenantAdminUrl { get; protected set; }
 
         public ClientContext Context { get; set; }
-        internal string AccessToken
-        {
-            get
-            {
+        public ProjectContext ProjectContext { get; set; }
+        internal string AccessToken {
+            get {
                 if (!string.IsNullOrEmpty(TokenResult.AccessToken) && DateTime.Now > TokenResult.ExpiresOn && !string.IsNullOrEmpty(TokenResult.RefreshToken))
                 {
                     // Expired token
@@ -64,8 +65,7 @@ namespace SharePointPnP.PowerShell.Commands.Base
                 }
                 return TokenResult.AccessToken;
             }
-            set
-            {
+            set {
                 if (TokenResult != null)
                 {
                     TokenResult.AccessToken = value;
@@ -91,7 +91,17 @@ namespace SharePointPnP.PowerShell.Commands.Base
             RetryWait = retryWait;
             PSCredential = credential;
             TenantAdminUrl = tenantAdminUrl;
-            ContextCache = new List<ClientContext> { context };
+            ContextCache = new List<ClientContext>();
+            ProjectContextCache = new List<ProjectContext>();
+            if (context is ProjectContext projectContext)
+            {
+                ProjectContextCache.Add(projectContext);
+                ContextCache.Add(projectContext.Clone(url));
+            }
+            else
+            {
+                ContextCache.Add(context);
+            }
             PnPVersionTag = pnpVersionTag;
             Url = (new Uri(url)).AbsoluteUri;
             ConnectionMethod = ConnectionMethod.Credentials;
@@ -116,7 +126,17 @@ namespace SharePointPnP.PowerShell.Commands.Base
             RetryWait = retryWait;
             PSCredential = credential;
             TenantAdminUrl = tenantAdminUrl;
-            ContextCache = new List<ClientContext> { context };
+            ContextCache = new List<ClientContext>();
+            ProjectContextCache = new List<ProjectContext>();
+            if (context is ProjectContext projectContext)
+            {
+                ProjectContextCache.Add(projectContext);
+                ContextCache.Add(projectContext.Clone(url));
+            }
+            else
+            {
+                ContextCache.Add(context);
+            }
             PnPVersionTag = pnpVersionTag;
             Url = (new Uri(url)).AbsoluteUri;
             ConnectionMethod = ConnectionMethod.AccessToken;
@@ -153,13 +173,12 @@ namespace SharePointPnP.PowerShell.Commands.Base
 
         public void RestoreCachedContext(string url)
         {
-            Context = ContextCache.FirstOrDefault(c => HttpUtility.UrlEncode(c.Url) == HttpUtility.UrlEncode(url));
+            Context = GetCachedContext(url);
         }
 
         internal void CacheContext()
         {
-            var c = ContextCache.FirstOrDefault(cc => HttpUtility.UrlEncode(cc.Url) == HttpUtility.UrlEncode(Context.Url));
-            if (c == null)
+            if (GetCachedContext(Context.Url) == null)
             {
                 ContextCache.Add(Context);
             }
@@ -167,24 +186,53 @@ namespace SharePointPnP.PowerShell.Commands.Base
 
         public ClientContext CloneContext(string url)
         {
-            var context = ContextCache.FirstOrDefault(c => HttpUtility.UrlEncode(c.Url) == HttpUtility.UrlEncode(url));
+            //var context = ContextCache.FirstOrDefault(c => HttpUtility.UrlEncode(c.Url) == HttpUtility.UrlEncode(url));
+            var context = GetCachedContext(url);
             if (context == null)
             {
                 context = Context.Clone(url);
                 ContextCache.Add(context);
             }
             Context = context;
+            ProjectContext = null;
             return context;
+        }
+
+        public ClientContext CloneProjectContext(string url)
+        {
+            var context = GetCachedContext(url);
+            var projectContext = GetCachedProjectContext(url);
+            if (projectContext != null)
+            {
+                ProjectContext = projectContext;
+            }
+            else
+            {
+                projectContext = context.CloneAsProjectContext(url);
+                ProjectContext = projectContext;
+            }
+
+            return projectContext;
         }
 
         internal static ClientContext GetCachedContext(string url)
         {
-            return ContextCache.FirstOrDefault(c => HttpUtility.UrlEncode(c.Url) == HttpUtility.UrlEncode(url));
+            //return ContextCache.FirstOrDefault(c => HttpUtility.UrlEncode(c.Url) == HttpUtility.UrlEncode(url));
+            var urlEncoded = HttpUtility.UrlEncode(url);
+            return ContextCache.FirstOrDefault(c => HttpUtility.UrlEncode(c.Url) == urlEncoded);
+        }
+
+        internal static ProjectContext GetCachedProjectContext(string url)
+        {
+            var urlEncoded = HttpUtility.UrlEncode(url);
+            return ProjectContextCache.FirstOrDefault(c => HttpUtility.UrlEncode(c.Url) == urlEncoded);
         }
 
         internal static void ClearContextCache()
         {
+#warning since nobody calls this and it is internal why not remove it?
             ContextCache.Clear();
+            ProjectContextCache.Clear();
         }
 
         internal void InitializeTelemetry(ClientContext context, PSHost host)
