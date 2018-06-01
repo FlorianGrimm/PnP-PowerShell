@@ -35,15 +35,15 @@ namespace SharePointPnP.PowerShell.Commands
             if (Web.Id != Guid.Empty)
             {
                 web = web.GetWebById(Web.Id);
-                SPOnlineConnection.CurrentConnection.CloneContext(web.Url);
+                CurrentConnection.CloneContext(web.Url);
 
-                web = SPOnlineConnection.CurrentConnection.Context.Web;
+                web = CurrentConnection.Context.Web;
             }
             else if (!string.IsNullOrEmpty(Web.Url))
             {
                 web = web.GetWebByUrl(Web.Url);
-                SPOnlineConnection.CurrentConnection.CloneContext(web.Url);
-                web = SPOnlineConnection.CurrentConnection.Context.Web;
+                CurrentConnection.CloneContext(web.Url);
+                web = CurrentConnection.Context.Web;
             }
             else if (Web.Web != null)
             {
@@ -51,19 +51,19 @@ namespace SharePointPnP.PowerShell.Commands
 
                 web.EnsureProperty(w => w.Url);
 
-                SPOnlineConnection.CurrentConnection.CloneContext(web.Url);
-                web = SPOnlineConnection.CurrentConnection.Context.Web;
+                CurrentConnection.CloneContext(web.Url);
+                web = CurrentConnection.Context.Web;
             }
             else
             {
-                if (SPOnlineConnection.CurrentConnection.Context.Url != SPOnlineConnection.CurrentConnection.Url)
+                if (CurrentConnection.Context.Url != CurrentConnection.Url)
                 {
-                    SPOnlineConnection.CurrentConnection.RestoreCachedContext(SPOnlineConnection.CurrentConnection.Url);
+                    CurrentConnection.RestoreCachedContext(CurrentConnection.Url);
                 }
                 web = ClientContext.Web;
             }
 
-            SPOnlineConnection.CurrentConnection.Context.ExecuteQueryRetry();
+            CurrentConnection.Context.ExecuteQueryRetry();
 
             return web;
         }
@@ -71,16 +71,16 @@ namespace SharePointPnP.PowerShell.Commands
         protected override void EndProcessing()
         {
             base.EndProcessing();
-            if (SPOnlineConnection.CurrentConnection.Context.Url != SPOnlineConnection.CurrentConnection.Url)
+            if (CurrentConnection.Context.Url != CurrentConnection.Url)
             {
-                SPOnlineConnection.CurrentConnection.RestoreCachedContext(SPOnlineConnection.CurrentConnection.Url);
+                CurrentConnection.RestoreCachedContext(CurrentConnection.Url);
             }
         }
 
         protected override void BeginProcessing()
         {
             base.BeginProcessing();
-            SPOnlineConnection.CurrentConnection.CacheContext();
+            CurrentConnection.CacheContext();
         }
     }
 }

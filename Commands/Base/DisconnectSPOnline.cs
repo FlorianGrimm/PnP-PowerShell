@@ -22,15 +22,9 @@ namespace SharePointPnP.PowerShell.Commands.Base
 
         protected override void ProcessRecord()
         {
-            var success = false;
-            if (Connection != null)
-            {
-                success = DisconnectProvidedService(Connection);
-            }
-            else
-            {
-                success = DisconnectCurrentService();
-            }
+            var connection = Connection ?? SPOnlineConnection.CurrentConnection;
+            var success = DisconnectProvidedService(connection);
+            if (ReferenceEquals(connection, SPOnlineConnection.CurrentConnection)) { SPOnlineConnection.CurrentConnection = null; }
             if (!success)
             {
                 throw new InvalidOperationException(Properties.Resources.NoConnectionToDisconnect);
@@ -54,25 +48,12 @@ namespace SharePointPnP.PowerShell.Commands.Base
 
         internal static bool DisconnectProvidedService(SPOnlineConnection connection)
         {
-            connection.AccessToken = string.Empty;
             Environment.SetEnvironmentVariable("PNPPSHOST", string.Empty);
             Environment.SetEnvironmentVariable("PNPPSSITE", string.Empty);
             if (connection == null)
                 return false;
+            connection.AccessToken = string.Empty;
             connection.Context = null;
-            connection = null;
-            return true;
-        }
-
-        internal static bool DisconnectCurrentService()
-        {
-            SPOnlineConnection.CurrentConnection.AccessToken = string.Empty;
-            Environment.SetEnvironmentVariable("PNPPSHOST", string.Empty);
-            Environment.SetEnvironmentVariable("PNPPSSITE", string.Empty);
-            if (SPOnlineConnection.CurrentConnection == null)
-                return false;
-            SPOnlineConnection.CurrentConnection.Context = null;
-            SPOnlineConnection.CurrentConnection = null;
             return true;
         }
     }

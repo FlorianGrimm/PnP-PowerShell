@@ -124,7 +124,7 @@ namespace SharePointPnP.PowerShell.Commands
                 invokeAction = new InvokeAction.InvokeWebAction(this, SelectedWeb, ListName, webActions, listActions, listItemActions, SkipCounting.ToBool());
             }
 
-            InvokeWebActionResult result = invokeAction.StartProcessAction();
+            InvokeWebActionResult result = invokeAction.StartProcessAction(CurrentConnection);
 
             if (!DisableStatisticsOutput)
             {

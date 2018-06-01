@@ -24,10 +24,10 @@ namespace SharePointPnP.PowerShell.Commands.Base
         internal string userAgent;
         internal ConnectionMethod ConnectionMethod { get; set; }
         internal string PnPVersionTag { get; set; }
-        internal static List<ClientContext> ContextCache { get; set; }
+        internal List<ClientContext> ContextCache { get; set; }
 
         public static AuthenticationResult AuthenticationResult { get; set; }
-        public static TokenResult TokenResult { get; set; }
+        public TokenResult TokenResult { get; set; }
         public static SPOnlineConnection CurrentConnection { get; internal set; }
         public ConnectionType ConnectionType { get; protected set; }
         public int MinimalHealthScore { get; protected set; }
@@ -153,13 +153,15 @@ namespace SharePointPnP.PowerShell.Commands.Base
 
         public void RestoreCachedContext(string url)
         {
-            Context = ContextCache.FirstOrDefault(c => HttpUtility.UrlEncode(c.Url) == HttpUtility.UrlEncode(url));
+            //Context = ContextCache.FirstOrDefault(c => HttpUtility.UrlEncode(c.Url) == HttpUtility.UrlEncode(url));
+            Context = GetCachedContext(url);
         }
 
         internal void CacheContext()
         {
-            var c = ContextCache.FirstOrDefault(cc => HttpUtility.UrlEncode(cc.Url) == HttpUtility.UrlEncode(Context.Url));
-            if (c == null)
+            //var c = ContextCache.FirstOrDefault(cc => HttpUtility.UrlEncode(cc.Url) == HttpUtility.UrlEncode(Context.Url));
+            //if (c == null)
+            if (GetCachedContext(Context.Url) == null)
             {
                 ContextCache.Add(Context);
             }
@@ -167,7 +169,7 @@ namespace SharePointPnP.PowerShell.Commands.Base
 
         public ClientContext CloneContext(string url)
         {
-            var context = ContextCache.FirstOrDefault(c => HttpUtility.UrlEncode(c.Url) == HttpUtility.UrlEncode(url));
+            var context = GetCachedContext(url);
             if (context == null)
             {
                 context = Context.Clone(url);
@@ -177,15 +179,16 @@ namespace SharePointPnP.PowerShell.Commands.Base
             return context;
         }
 
-        internal static ClientContext GetCachedContext(string url)
+        internal ClientContext GetCachedContext(string url)
         {
-            return ContextCache.FirstOrDefault(c => HttpUtility.UrlEncode(c.Url) == HttpUtility.UrlEncode(url));
+            var encodedUrl = HttpUtility.UrlEncode(url);
+            return this.ContextCache.FirstOrDefault(c => HttpUtility.UrlEncode(c.Url) == encodedUrl);
         }
 
-        internal static void ClearContextCache()
-        {
-            ContextCache.Clear();
-        }
+        //internal static void ClearContextCache()
+        //{
+        //    ContextCache.Clear();
+        //}
 
         internal void InitializeTelemetry(ClientContext context, PSHost host)
         {

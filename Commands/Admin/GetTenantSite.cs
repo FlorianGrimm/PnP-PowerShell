@@ -52,7 +52,7 @@ namespace SharePointPnP.PowerShell.Commands
 
         protected override void ExecuteCmdlet()
         {
-            if (SPOnlineConnection.CurrentConnection.ConnectionType == ConnectionType.OnPrem)
+            if (CurrentConnection.ConnectionType == ConnectionType.OnPrem)
             {
                 WriteObject(ClientContext.Site);
             }

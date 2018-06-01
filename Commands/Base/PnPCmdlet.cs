@@ -14,34 +14,40 @@ namespace SharePointPnP.PowerShell.Commands
 {
     public class PnPCmdlet : PSCmdlet
     {
-        public ClientContext ClientContext => Connection?.Context ?? SPOnlineConnection.CurrentConnection.Context;
+        public SPOnlineConnection CurrentConnection => Connection ?? SPOnlineConnection.CurrentConnection;
+
+        public ClientContext ClientContext => _ClientContext ?? CurrentConnection?.Context;
+
+        private ClientContext _ClientContext;
 
         [Parameter(Mandatory = false, HelpMessage = "Optional connection to be used by the cmdlet. Retrieve the value for this parameter by either specifying -ReturnConnection on Connect-PnPOnline or by executing Get-PnPConnection.")] // do not remove '#!#99'
         [PnPParameter(Order = 99)]
-        public SPOnlineConnection Connection = null;
+        public SPOnlineConnection Connection;
 
         protected override void BeginProcessing()
         {
             base.BeginProcessing();
 
-            if (SPOnlineConnection.CurrentConnection != null && SPOnlineConnection.CurrentConnection.TelemetryClient != null)
+            if (Connection == null)
             {
-                SPOnlineConnection.CurrentConnection.TelemetryClient.TrackEvent(MyInvocation.MyCommand.Name);
+                Connection = SPOnlineConnection.CurrentConnection;
             }
+            CurrentConnection?.TelemetryClient.TrackEvent(MyInvocation.MyCommand.Name);
+            _ClientContext = CurrentConnection?.Context;
 
             if (MyInvocation.InvocationName.ToUpper().IndexOf("-SPO", StringComparison.Ordinal) > -1)
             {
                 WriteWarning($"PnP Cmdlets starting with the SPO Prefix will be deprecated in the June 2017 release. Please update your scripts and use {MyInvocation.MyCommand.Name} instead.");
             }
-            if (SPOnlineConnection.CurrentConnection == null && Connection == null)
+            if (Connection == null)
             {
                 throw new InvalidOperationException(Resources.NoConnection);
             }
-            if (SPOnlineConnection.CurrentConnection == null && ClientContext == null)
+            if (ClientContext == null)
             {
                 throw new InvalidOperationException(Resources.NoConnection);
             }
-            if (SPOnlineConnection.CurrentConnection.ConnectionMethod == Model.ConnectionMethod.GraphDeviceLogin)
+            if (Connection.ConnectionMethod == Model.ConnectionMethod.GraphDeviceLogin)
             {
                 throw new InvalidOperationException(Resources.NoConnection);
             }
@@ -52,41 +58,41 @@ namespace SharePointPnP.PowerShell.Commands
 
         protected override void ProcessRecord()
         {
+            var connection = CurrentConnection;
             try
             {
-                if (SPOnlineConnection.CurrentConnection.MinimalHealthScore != -1)
+                if (connection.MinimalHealthScore != -1)
                 {
-                    int healthScore = Utility.GetHealthScore(SPOnlineConnection.CurrentConnection.Url);
-                    if (healthScore <= SPOnlineConnection.CurrentConnection.MinimalHealthScore)
+                    int healthScore = Utility.GetHealthScore(connection.Url);
+                    if (healthScore <= connection.MinimalHealthScore)
                     {
                         ExecuteCmdlet();
                     }
                     else
                     {
-                        if (SPOnlineConnection.CurrentConnection.RetryCount != -1)
+                        if (connection.RetryCount != -1)
                         {
                             int retry = 1;
-                            while (retry <= SPOnlineConnection.CurrentConnection.RetryCount)
+                            while (retry <= connection.RetryCount)
                             {
-                                WriteWarning(string.Format(Resources.Retry0ServerNotHealthyWaiting1seconds, retry, SPOnlineConnection.CurrentConnection.RetryWait, healthScore));
-                                Thread.Sleep(SPOnlineConnection.CurrentConnection.RetryWait * 1000);
-                                healthScore = Utility.GetHealthScore(SPOnlineConnection.CurrentConnection.Url);
-                                if (healthScore <= SPOnlineConnection.CurrentConnection.MinimalHealthScore)
+                                WriteWarning(string.Format(Resources.Retry0ServerNotHealthyWaiting1seconds, retry, connection.RetryWait, healthScore));
+                                Thread.Sleep(connection.RetryWait * 1000);
+                                healthScore = Utility.GetHealthScore(connection.Url);
+                                if (healthScore <= connection.MinimalHealthScore)
                                 {
-                                    var tag = SPOnlineConnection.CurrentConnection.PnPVersionTag + ":" + MyInvocation.MyCommand.Name.Replace("SPO", "");
+                                    var tag = connection.PnPVersionTag + ":" + MyInvocation.MyCommand.Name.Replace("SPO", "");
                                     if (tag.Length > 32)
                                     {
                                         tag = tag.Substring(0, 32);
                                     }
                                     ClientContext.ClientTag = tag;
 
-
                                     ExecuteCmdlet();
                                     break;
                                 }
                                 retry++;
                             }
-                            if (retry > SPOnlineConnection.CurrentConnection.RetryCount)
+                            if (retry > connection.RetryCount)
                             {
                                 ThrowTerminatingError(new ErrorRecord(new Exception(Resources.HealthScoreNotSufficient), "HALT", ErrorCategory.LimitsExceeded, null));
                             }
@@ -99,7 +105,7 @@ namespace SharePointPnP.PowerShell.Commands
                 }
                 else
                 {
-                    var tag = SPOnlineConnection.CurrentConnection.PnPVersionTag + ":" + MyInvocation.MyCommand.Name.Replace("SPO", "");
+                    var tag = connection.PnPVersionTag + ":" + MyInvocation.MyCommand.Name.Replace("SPO", "");
                     if (tag.Length > 32)
                     {
                         tag = tag.Substring(0, 32);
@@ -115,14 +121,15 @@ namespace SharePointPnP.PowerShell.Commands
             }
             catch (Exception ex)
             {
-                SPOnlineConnection.CurrentConnection.RestoreCachedContext(SPOnlineConnection.CurrentConnection.Url);
+                //SPOnlineConnection.CurrentConnection.RestoreCachedContext(SPOnlineConnection.CurrentConnection.Url);
+                connection.RestoreCachedContext(connection.Url);
                 WriteError(new ErrorRecord(ex, "EXCEPTION", ErrorCategory.WriteError, null));
             }
         }
 
-        protected override void EndProcessing()
-        {
-            base.EndProcessing();
-        }
+        //protected override void EndProcessing()
+        //{
+        //    base.EndProcessing();
+        //}
     }
 }

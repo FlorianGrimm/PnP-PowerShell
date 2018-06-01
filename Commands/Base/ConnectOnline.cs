@@ -608,7 +608,7 @@ Use -PnPO365ManagementShell instead");
 #endif
             WriteVerbose($"PnP PowerShell Cmdlets ({System.Reflection.Assembly.GetExecutingAssembly().GetName().Version}): Connected to {Url}");
             SPOnlineConnection.CurrentConnection = connection;
-            if (CreateDrive && SPOnlineConnection.CurrentConnection.Context != null)
+            if (CreateDrive && connection.Context != null)
             {
                 var provider = SessionState.Provider.GetAll().FirstOrDefault(p => p.Name.Equals(SPOProvider.PSProviderName, StringComparison.InvariantCultureIgnoreCase));
                 if (provider != null)
@@ -622,11 +622,11 @@ Use -PnPO365ManagementShell instead");
                     SessionState.Drive.New(drive, "Global");
                 }
             }
-            if (SPOnlineConnection.CurrentConnection != null)
+            if (connection != null)
             {
-                if (SPOnlineConnection.CurrentConnection.ConnectionMethod != Model.ConnectionMethod.GraphDeviceLogin)
+                if (connection.ConnectionMethod != Model.ConnectionMethod.GraphDeviceLogin)
                 {
-                    var hostUri = new Uri(SPOnlineConnection.CurrentConnection.Url);
+                    var hostUri = new Uri(connection.Url);
                     Environment.SetEnvironmentVariable("PNPPSHOST", hostUri.Host);
                     Environment.SetEnvironmentVariable("PNPPSSITE", hostUri.LocalPath);
                 }

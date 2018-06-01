@@ -82,14 +82,14 @@ namespace SharePointPnP.PowerShell.Commands.InvokeAction
 			_isListNameSpecified = true;
 		}
 
-		public InvokeWebActionResult StartProcessAction()
+		public InvokeWebActionResult StartProcessAction(SPOnlineConnection connection)
 		{
 			_totalExecutionTimeStopWatch = Stopwatch.StartNew();
 
 			_result = new InvokeWebActionResult();
 			_result.StartDate = DateTime.Now;
 
-			ClientContext previousContext = SPOnlineConnection.CurrentConnection.Context;
+			ClientContext previousContext = connection.Context;
 
 			UpdatePropertiesToLoad();
 
@@ -102,12 +102,12 @@ namespace SharePointPnP.PowerShell.Commands.InvokeAction
 			if (!_skipCounting)
 				CountItems(webs);
 
-			ProcessAction(webs);
+			ProcessAction(webs, connection);
 
 			UpdateResult();
 
 			//Reset context to where the user were before.
-			SPOnlineConnection.CurrentConnection.Context = previousContext;
+			connection.Context = previousContext;
 
 			return _result;
 		}
@@ -195,7 +195,7 @@ namespace SharePointPnP.PowerShell.Commands.InvokeAction
 			}
 		}
 
-		private void ProcessAction(List<Web> webs)
+		private void ProcessAction(List<Web> webs, SPOnlineConnection connection)
 		{
 			bool processAction;
 			int webCount = webs.Count;
@@ -205,7 +205,7 @@ namespace SharePointPnP.PowerShell.Commands.InvokeAction
 
 				//Update current connection context to the web that is beeing process
 				//So commands like Get-PnPList returns the correct list for the current web beeing proccess
-				SPOnlineConnection.CurrentConnection.Context = (ClientContext) currentWeb.Context;
+				connection.Context = (ClientContext) currentWeb.Context;
 
 				currentWeb.LoadProperties(_webActions.Properties);
 

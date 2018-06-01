@@ -29,21 +29,13 @@ namespace SharePointPnP.PowerShell.Commands.Base
         protected override void BeginProcessing()
         {
             base.BeginProcessing();
+#warning TODO TEST
 
-            if (SPOnlineConnection.CurrentConnection == null)
-            {
-                throw new InvalidOperationException(Resources.NoConnection);
-            }
-            if (ClientContext == null)
-            {
-                throw new InvalidOperationException(Resources.NoConnection);
-            }
+            CurrentConnection.CacheContext();
 
-            SPOnlineConnection.CurrentConnection.CacheContext();
-
-            if (SPOnlineConnection.CurrentConnection.TenantAdminUrl != null && SPOnlineConnection.CurrentConnection.ConnectionType == ConnectionType.O365)
+            if (CurrentConnection.TenantAdminUrl != null && CurrentConnection.ConnectionType == ConnectionType.O365)
             {
-                var uri = new Uri(SPOnlineConnection.CurrentConnection.Url);
+                var uri = new Uri(CurrentConnection.Url);
                 var uriParts = uri.Host.Split('.');
                 if (uriParts[0].ToLower().EndsWith("-admin"))
                 {
@@ -55,23 +47,25 @@ namespace SharePointPnP.PowerShell.Commands.Base
                 {
                     _baseUri = new Uri($"{uri.Scheme}://{uri.Authority}");
                 }
-                SPOnlineConnection.CurrentConnection.CloneContext(SPOnlineConnection.CurrentConnection.TenantAdminUrl);
+#warning thinkof
+                //SPOnlineConnection.CurrentConnection.CloneContext(SPOnlineConnection.CurrentConnection.TenantAdminUrl);
+                CurrentConnection.CloneContext(CurrentConnection.TenantAdminUrl);
             }
             else
             {
                 Uri uri = new Uri(ClientContext.Url);
                 var uriParts = uri.Host.Split('.');
                 if (!uriParts[0].EndsWith("-admin") &&
-                    SPOnlineConnection.CurrentConnection.ConnectionType == ConnectionType.O365)
+                    CurrentConnection.ConnectionType == ConnectionType.O365)
                 {
                     _baseUri = new Uri($"{uri.Scheme}://{uri.Authority}");
 
                     var adminUrl = $"https://{uriParts[0]}-admin.{string.Join(".", uriParts.Skip(1))}";
 
-                    SPOnlineConnection.CurrentConnection.Context =
-                        SPOnlineConnection.CurrentConnection.CloneContext(adminUrl);
+                    CurrentConnection.Context =
+                        CurrentConnection.CloneContext(adminUrl);
                 }
-                else if(SPOnlineConnection.CurrentConnection.ConnectionType == ConnectionType.TenantAdmin)
+                else if(CurrentConnection.ConnectionType == ConnectionType.TenantAdmin)
                 {
                     _baseUri =
                        new Uri(
@@ -83,7 +77,9 @@ namespace SharePointPnP.PowerShell.Commands.Base
 
         protected override void EndProcessing()
         {
-            SPOnlineConnection.CurrentConnection.RestoreCachedContext(SPOnlineConnection.CurrentConnection.Url);
+#warning thinkof
+            //SPOnlineConnection.CurrentConnection.RestoreCachedContext(SPOnlineConnection.CurrentConnection.Url);
+            CurrentConnection.RestoreCachedContext(CurrentConnection.Url);
         }
     }
 }
