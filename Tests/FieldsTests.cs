@@ -5,18 +5,13 @@ using Microsoft.SharePoint.Client;
 using System.Linq;
 using OfficeDevPnP.Core.Entities;
 
-namespace SharePointPnP.PowerShell.Tests
-{
+namespace SharePointPnP.PowerShell.Tests {
     [TestClass]
-    public class FieldsTests
-    {
+    public class FieldsTests {
         [TestMethod]
-        public void AddFieldTest()
-        {
-            using (var ctx = TestCommon.CreateClientContext())
-            {
-                using (var scope = new PSTestScope(true))
-                {
+        public void AddFieldTest() {
+            using (var ctx = TestCommon.CreateClientContext()) {
+                using (var scope = new PSTestScope(true)) {
                     scope.ExecuteCommand("Add-PnPField",
                         new CommandParameter("DisplayName", "PSCmdletTestField"),
                         new CommandParameter("InternalName", "PSCmdletTestField"),
@@ -25,15 +20,13 @@ namespace SharePointPnP.PowerShell.Tests
                 }
 
                 var succeeded = false;
-                try
-                {
+                try {
                     var field = ctx.Web.Fields.GetByInternalNameOrTitle("PSCmdletTestField");
                     ctx.ExecuteQueryRetry();
                     succeeded = true;
                     field.DeleteObject();
                     ctx.ExecuteQueryRetry();
-                }
-                catch { }
+                } catch { }
 
                 Assert.IsTrue(succeeded);
             }
@@ -41,39 +34,32 @@ namespace SharePointPnP.PowerShell.Tests
 
 
         [TestMethod]
-        public void AddFieldFromXmlTest()
-        {
+        public void AddFieldFromXmlTest() {
             var xml = @"<Field Type=""Text"" Name=""PSCmdletTest"" DisplayName=""PSCmdletTest"" ID=""{27d81055-f208-41c9-a976-61c5473eed4a}"" Group=""Test"" Required=""FALSE"" StaticName=""PSCmdletTest"" />";
 
-            using (var ctx = TestCommon.CreateClientContext())
-            {
-                using (var scope = new PSTestScope(true))
-                {
+            using (var ctx = TestCommon.CreateClientContext()) {
+                using (var scope = new PSTestScope(true)) {
                     scope.ExecuteCommand("Add-PnPFieldFromXml",
                         new CommandParameter("FieldXml", xml));
                 }
 
                 var succeeded = false;
-                try
-                {
+                try {
                     var field = ctx.Web.Fields.GetByInternalNameOrTitle("PSCmdletTest");
                     ctx.ExecuteQueryRetry();
                     succeeded = true;
                     field.DeleteObject();
                     ctx.ExecuteQueryRetry();
-                }
-                catch { }
+                } catch { }
 
                 Assert.IsTrue(succeeded);
             }
         }
 
         [TestMethod]
-        public void AddTaxonomyField()
-        {
+        public void AddTaxonomyField() {
 
-            using (var ctx = TestCommon.CreateClientContext())
-            {
+            using (var ctx = TestCommon.CreateClientContext()) {
                 // Get the first group
                 var taxSession = ctx.Site.GetTaxonomySession();
                 var termStore = taxSession.GetDefaultSiteCollectionTermStore();
@@ -87,8 +73,7 @@ namespace SharePointPnP.PowerShell.Tests
                 var termSet = termGroup.TermSets[0];
                 ctx.Load(termSet, ts => ts.Id);
                 ctx.ExecuteQueryRetry();
-                using (var scope = new PSTestScope(true))
-                {
+                using (var scope = new PSTestScope(true)) {
                     scope.ExecuteCommand("Add-PnPTaxonomyField",
                         new CommandParameter("DisplayName", "PSCmdletTestField"),
                         new CommandParameter("InternalName", "PSCmdletTestField"),
@@ -97,40 +82,38 @@ namespace SharePointPnP.PowerShell.Tests
                 }
 
                 var succeeded = false;
-                try
-                {
+                try {
                     var field = ctx.Web.Fields.GetByInternalNameOrTitle("PSCmdletTestField");
                     ctx.ExecuteQueryRetry();
                     succeeded = true;
                     field.DeleteObject();
                     ctx.ExecuteQueryRetry();
-                }
-                catch { }
+                } catch { }
 
                 Assert.IsTrue(succeeded);
             }
         }
 
         [TestMethod]
-        public void GetFieldTest()
-        {
+        public void GetFieldTest() {
 
-            using (var scope = new PSTestScope(true))
-            {
+            using (var scope = new PSTestScope(true)) {
                 var results = scope.ExecuteCommand("Get-PnPField");
 
                 Assert.IsTrue(results.Any());
 
-                Assert.IsTrue(results[0].BaseObject.GetType() == typeof(Microsoft.SharePoint.Client.Field));
+                //Assert.IsTrue(results[0].BaseObject.GetType() == typeof(Microsoft.SharePoint.Client.Field));
+
+                foreach (var field in results) {
+                    Assert.IsTrue(typeof(Microsoft.SharePoint.Client.Field).IsAssignableFrom(field.BaseObject.GetType()));
+                }
             }
         }
 
         [TestMethod]
-        public void GetField_ByTitle_Test()
-        {
+        public void GetField_ByTitle_Test() {
 
-            using (var scope = new PSTestScope(true))
-            {
+            using (var scope = new PSTestScope(true)) {
                 var results = scope.ExecuteCommand("Get-PnPField",
                     new CommandParameter("Identity", "Title"));
 
@@ -141,12 +124,9 @@ namespace SharePointPnP.PowerShell.Tests
         }
 
         [TestMethod]
-        public void RemoveFieldTest()
-        {
-            using (var ctx = TestCommon.CreateClientContext())
-            {
-                FieldCreationInformation fieldCI = new FieldCreationInformation(FieldType.Text)
-                {
+        public void RemoveFieldTest() {
+            using (var ctx = TestCommon.CreateClientContext()) {
+                FieldCreationInformation fieldCI = new FieldCreationInformation(FieldType.Text) {
                     DisplayName = "PnPTestTextField",
                     Group = "PnP",
                     InternalName = "PnPTestTextField",
@@ -155,8 +135,7 @@ namespace SharePointPnP.PowerShell.Tests
 
                 ctx.Web.CreateField(fieldCI);
 
-                using (var scope = new PSTestScope(true))
-                {
+                using (var scope = new PSTestScope(true)) {
                     scope.ExecuteCommand("Remove-PnPField",
                         new CommandParameter("Identity", "PnPTestTextField"),
                         new CommandParameter("Force"));
@@ -164,12 +143,10 @@ namespace SharePointPnP.PowerShell.Tests
                 }
 
                 var succeeded = false;
-                try
-                {
+                try {
                     var field = ctx.Web.Fields.GetByInternalNameOrTitle("PnPTestTextField");
                     ctx.ExecuteQueryRetry();
-                }
-                catch {
+                } catch {
                     succeeded = true;
                 }
 

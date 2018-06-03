@@ -5,27 +5,20 @@ using System.Linq;
 using System.Management.Automation.Runspaces;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 
-namespace SharePointPnP.PowerShell.Tests
-{
+namespace SharePointPnP.PowerShell.Tests {
     /// <summary>
     /// Class used to test pulling datarows from a list into a template file
     /// </summary>
     [TestClass]
-    public class ListDataRowProvisioningTemplate
-    {
+    public class ListDataRowProvisioningTemplate {
         [TestInitialize]
-        public void Initialize()
-        {
+        public void Initialize() {
             //make sure the list doesn't exist.
             Cleanup();
-            using (var ctx = TestCommon.CreateClientContext())
-            {
-                try
-                {
+            using (var ctx = TestCommon.CreateClientContext()) {
+                try {
                     ctx.Web.CreateList(ListTemplateType.GenericList, "PnPTestList", false);
-                }
-                catch(Exception)
-                {
+                } catch (Exception) {
 
                 }
                 var list = ctx.Web.Lists.GetByTitle("PnPTestList");
@@ -33,32 +26,27 @@ namespace SharePointPnP.PowerShell.Tests
                 ctx.Load(listFields, fields => fields.Include(field => field.Title, field => field.InternalName));
                 ctx.ExecuteQueryRetry();
                 //Create 10 list items.
-                for (var i = 0; i < 10; i++)
-                {
+                for (var i = 0; i < 10; i++) {
                     var itemCreateInfo = new ListItemCreationInformation();
                     var listItem = list.AddItem(itemCreateInfo);
                     var titleField = listFields.FirstOrDefault(f => f.Title == "Title"); //resolve Field Internal Name by Title
                     listItem[titleField.InternalName] = "Item " + i.ToString();
                     listItem.Update();
-                    if (i % 2 == 0)
-                    {
+                    if (i % 2 == 0) {
                         listItem.BreakRoleInheritance(true, false);
                     }
                     ctx.ExecuteQueryRetry();
                 }
 
-                for(var i = 0; i < 10; i++)
-                {
-                    var testFolder = list.RootFolder.CreateFolder("TestFolder"+i.ToString());
+                for (var i = 0; i < 10; i++) {
+                    var testFolder = list.RootFolder.CreateFolder("TestFolder" + i.ToString());
                     ctx.ExecuteQueryRetry();
-                    if(i % 2 == 0)
-                    {
+                    if (i % 2 == 0) {
                         var listItem = testFolder.ListItemAllFields;
                         ctx.Load(listItem);
                         ctx.ExecuteQueryRetry();
 
-                        for(var j = 0; j < 5; j++)
-                        {
+                        for (var j = 0; j < 5; j++) {
                             var subFolder = testFolder.CreateFolder("subFolder" + j.ToString());
                             ctx.ExecuteQueryRetry();
                         }
@@ -71,33 +59,25 @@ namespace SharePointPnP.PowerShell.Tests
         }
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            using (var ctx = TestCommon.CreateClientContext())
-            {
-                try
-                {
+        public void Cleanup() {
+            using (var ctx = TestCommon.CreateClientContext()) {
+                try {
                     var list = ctx.Web.GetListByTitle("PnPTestList");
-                    if (list != null)
-                    {
+                    if (list != null) {
                         list.DeleteObject();
                         ctx.ExecuteQueryRetry();
                     }
-                }
-                catch(Exception)
-                {
+                } catch (Exception) {
 
                 }
 
-               
+
             }
         }
 
         [TestMethod]
-        public void GetDataRowsFromListNoFields()
-        {
-            using(var scope = new PSTestScope(true))
-            {
+        public void GetDataRowsFromListNoFields() {
+            using (var scope = new PSTestScope(true)) {
                 //var template = scope.ExecuteCommand("Get-PnPProvisioningTemplate", new CommandParameter("OutputInstance", true));
 
                 //Assert.IsTrue(template.Any());
@@ -107,19 +87,18 @@ namespace SharePointPnP.PowerShell.Tests
                     new CommandParameter("List", "PnPTestList"),
                     new CommandParameter("Query", "<View></View>")
                     );
+                Assert.IsTrue(results.Any());
                 var template = results[0].BaseObject as ProvisioningTemplate;
                 Assert.AreEqual(10, template.Lists[0].DataRows.Count);
-               
-                    
+
+
             }
         }
 
 
         [TestMethod]
-        public void GetDataRowsFromListWithFields()
-        {
-            using (var scope = new PSTestScope(true))
-            {
+        public void GetDataRowsFromListWithFields() {
+            using (var scope = new PSTestScope(true)) {
                 //var template = scope.ExecuteCommand("Get-PnPProvisioningTemplate", new CommandParameter("OutputInstance", true));
 
                 //Assert.IsTrue(template.Any());
@@ -141,11 +120,9 @@ namespace SharePointPnP.PowerShell.Tests
 
 
         [TestMethod]
-        public void GetDataRowsWithSecurityFromList()
-        {
-            using (var scope = new PSTestScope(true))
-            {
-             
+        public void GetDataRowsWithSecurityFromList() {
+            using (var scope = new PSTestScope(true)) {
+
                 string[] fields = new string[] { "Title" };
                 var results = scope.ExecuteCommand("Add-PnPDataRowsToProvisioningTemplate",
                     new CommandParameter("Path", @"..\\..\\Resources\\PnPTestList.xml"),
@@ -166,10 +143,8 @@ namespace SharePointPnP.PowerShell.Tests
         }
 
         [TestMethod]
-        public void GetFoldersFromList()
-        {
-            using(var scope =  new PSTestScope(true))
-            {
+        public void GetFoldersFromList() {
+            using (var scope = new PSTestScope(true)) {
                 var results = scope.ExecuteCommand("Add-PnPListFoldersToProvisioningTemplate",
                    new CommandParameter("Path", @"..\\..\\Resources\\PnPTestList.xml"),
                    new CommandParameter("List", "PnPTestList"),
@@ -180,21 +155,19 @@ namespace SharePointPnP.PowerShell.Tests
                 Assert.AreEqual(10, template.Lists[0].Folders.Count);
 
                 Assert.AreEqual(0, template.Lists[0].Folders[0].Folders.Count);
-               
+
             }
         }
 
         [TestMethod]
-        public void GetFoldersFromListWithRecursive()
-        {
-            using (var scope = new PSTestScope(true))
-            {
+        public void GetFoldersFromListWithRecursive() {
+            using (var scope = new PSTestScope(true)) {
                 var results = scope.ExecuteCommand("Add-PnPListFoldersToProvisioningTemplate",
                    new CommandParameter("Path", @"..\\..\\Resources\\PnPTestList.xml"),
                    new CommandParameter("List", "PnPTestList"),
                    new CommandParameter("Recursive", true)
                    );
-
+                Assert.IsTrue(results.Count > 0);
                 var template = results[0].BaseObject as ProvisioningTemplate;
                 Assert.AreEqual(10, template.Lists[0].Folders.Count);
                 OfficeDevPnP.Core.Framework.Provisioning.Model.Folder f = template.Lists[0].Folders.Find(fld => fld.Name == "TestFolder0");
@@ -204,10 +177,8 @@ namespace SharePointPnP.PowerShell.Tests
         }
 
         [TestMethod]
-        public void GetFoldersFromListWithIncludeSecurity()
-        {
-            using (var scope = new PSTestScope(true))
-            {
+        public void GetFoldersFromListWithIncludeSecurity() {
+            using (var scope = new PSTestScope(true)) {
                 var results = scope.ExecuteCommand("Add-PnPListFoldersToProvisioningTemplate",
                    new CommandParameter("Path", @"..\\..\\Resources\\PnPTestList.xml"),
                    new CommandParameter("List", "PnPTestList"),
@@ -225,10 +196,8 @@ namespace SharePointPnP.PowerShell.Tests
         }
 
         [TestMethod]
-        public void GetFoldersFromListWithRecursiveIncludeSecurity()
-        {
-            using (var scope = new PSTestScope(true))
-            {
+        public void GetFoldersFromListWithRecursiveIncludeSecurity() {
+            using (var scope = new PSTestScope(true)) {
                 var results = scope.ExecuteCommand("Add-PnPListFoldersToProvisioningTemplate",
                    new CommandParameter("Path", @"..\\..\\Resources\\PnPTestList.xml"),
                    new CommandParameter("List", "PnPTestList"),
@@ -240,7 +209,7 @@ namespace SharePointPnP.PowerShell.Tests
                 Assert.AreEqual(10, template.Lists[0].Folders.Count);
 
                 OfficeDevPnP.Core.Framework.Provisioning.Model.Folder f = template.Lists[0].Folders.Find(fld => fld.Name == "TestFolder0");
-               
+
                 Assert.IsTrue(f.Security.RoleAssignments.Count > 0);
                 Assert.AreEqual(5, f.Folders.Count);
             }

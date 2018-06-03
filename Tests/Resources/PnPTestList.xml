@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<pnp:Provisioning xmlns:pnp="http://schemas.dev.office.com/PnP/2016/05/ProvisioningSchema">
-  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=2.11.1701.0, Culture=neutral, PublicKeyToken=null" />
+<pnp:Provisioning xmlns:pnp="http://schemas.dev.office.com/PnP/2018/05/ProvisioningSchema">
+  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=2.27.1806.0, Culture=neutral, PublicKeyToken=null" />
   <pnp:Templates ID="CONTAINER-TEMPLATE-F6E7ECB2634143318E7F6769250F5BF1">
-    <pnp:ProvisioningTemplate ID="TEMPLATE-F6E7ECB2634143318E7F6769250F5BF1" Version="1" BaseSiteTemplate="STS#0">
+    <pnp:ProvisioningTemplate ID="TEMPLATE-F6E7ECB2634143318E7F6769250F5BF1" Version="1" BaseSiteTemplate="STS#0" Scope="Undefined">
       <pnp:Lists>
-        <pnp:ListInstance Title="PnPTestList" Description="" DocumentTemplate="" TemplateType="100" Url="Lists/PnPTestList" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" TemplateFeatureID="00bfea71-de22-43b2-a848-c05709900100" EnableFolderCreation="false">
+        <pnp:ListInstance Title="PnPTestList" Description="" DocumentTemplate="" TemplateType="100" Url="Lists/PnPTestList" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" TemplateFeatureID="00bfea71-de22-43b2-a848-c05709900100" EnableFolderCreation="false" IsApplicationList="false" ReadSecurity="0" WriteSecurity="0">
           <pnp:ContentTypeBindings>
             <pnp:ContentTypeBinding ContentTypeID="0x01" Default="true" />
             <pnp:ContentTypeBinding ContentTypeID="0x0120" />
@@ -23,7 +23,535 @@
               <JSLink>clienttemplates.js</JSLink>
             </View>
           </pnp:Views>
-          
+          <pnp:DataRows UpdateBehavior="Overwrite">
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 0</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">100</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">1_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 1</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">200</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">2_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 2</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">300</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">3_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 3</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">400</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">4_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 4</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">500</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">5_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 5</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">600</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">6_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 6</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">700</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">7_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 7</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">800</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">8_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 8</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">900</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">9_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 9</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">1000</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">10_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 0</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 1</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 2</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 3</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 4</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 5</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 6</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 7</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 8</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 9</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 0</pnp:DataValue>
+              <pnp:Security>
+                <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="true">
+                  <pnp:RoleAssignment Principal="Excel Services Viewers" RoleDefinition="View Only" />
+                  <pnp:RoleAssignment Principal="devel Owners" RoleDefinition="Full Control" />
+                  <pnp:RoleAssignment Principal="devel Visitors" RoleDefinition="Read" />
+                  <pnp:RoleAssignment Principal="devel Members" RoleDefinition="Edit" />
+                </pnp:BreakRoleInheritance>
+              </pnp:Security>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 1</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 2</pnp:DataValue>
+              <pnp:Security>
+                <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="true">
+                  <pnp:RoleAssignment Principal="Excel Services Viewers" RoleDefinition="View Only" />
+                  <pnp:RoleAssignment Principal="devel Owners" RoleDefinition="Full Control" />
+                  <pnp:RoleAssignment Principal="devel Visitors" RoleDefinition="Read" />
+                  <pnp:RoleAssignment Principal="devel Members" RoleDefinition="Edit" />
+                </pnp:BreakRoleInheritance>
+              </pnp:Security>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 3</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 4</pnp:DataValue>
+              <pnp:Security>
+                <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="true">
+                  <pnp:RoleAssignment Principal="Excel Services Viewers" RoleDefinition="View Only" />
+                  <pnp:RoleAssignment Principal="devel Owners" RoleDefinition="Full Control" />
+                  <pnp:RoleAssignment Principal="devel Visitors" RoleDefinition="Read" />
+                  <pnp:RoleAssignment Principal="devel Members" RoleDefinition="Edit" />
+                </pnp:BreakRoleInheritance>
+              </pnp:Security>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 5</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 6</pnp:DataValue>
+              <pnp:Security>
+                <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="true">
+                  <pnp:RoleAssignment Principal="Excel Services Viewers" RoleDefinition="View Only" />
+                  <pnp:RoleAssignment Principal="devel Owners" RoleDefinition="Full Control" />
+                  <pnp:RoleAssignment Principal="devel Visitors" RoleDefinition="Read" />
+                  <pnp:RoleAssignment Principal="devel Members" RoleDefinition="Edit" />
+                </pnp:BreakRoleInheritance>
+              </pnp:Security>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 7</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 8</pnp:DataValue>
+              <pnp:Security>
+                <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="true">
+                  <pnp:RoleAssignment Principal="Excel Services Viewers" RoleDefinition="View Only" />
+                  <pnp:RoleAssignment Principal="devel Owners" RoleDefinition="Full Control" />
+                  <pnp:RoleAssignment Principal="devel Visitors" RoleDefinition="Read" />
+                  <pnp:RoleAssignment Principal="devel Members" RoleDefinition="Edit" />
+                </pnp:BreakRoleInheritance>
+              </pnp:Security>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 9</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 0</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">100</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">1_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 1</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">200</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">2_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 2</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">300</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">3_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 3</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">400</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">4_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 4</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">500</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">5_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 5</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">600</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">6_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 6</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">700</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">7_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 7</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">800</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">8_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 8</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">900</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">9_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 9</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">1000</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">10_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 0</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">100</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">1_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 1</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">200</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">2_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 2</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">300</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">3_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 3</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">400</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">4_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 4</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">500</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">5_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 5</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">600</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">6_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 6</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">700</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">7_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 7</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">800</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">8_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 8</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">900</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">9_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 9</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">1000</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">10_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 0</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">100</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">1_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 1</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">200</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">2_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 2</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">300</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">3_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 3</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">400</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">4_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 4</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">500</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">5_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 5</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">600</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">6_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 6</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">700</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">7_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 7</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">800</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">8_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 8</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">900</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">9_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="Title">Item 9</pnp:DataValue>
+              <pnp:DataValue FieldName="Order">1000</pnp:DataValue>
+              <pnp:DataValue FieldName="FileLeafRef">10_.000</pnp:DataValue>
+              <pnp:DataValue FieldName="MetaInfo" />
+            </pnp:DataRow>
+          </pnp:DataRows>
+          <pnp:Folders>
+            <pnp:Folder Name="TestFolder6" />
+            <pnp:Folder Name="TestFolder4" />
+            <pnp:Folder Name="TestFolder2" />
+            <pnp:Folder Name="TestFolder8" />
+            <pnp:Folder Name="TestFolder7" />
+            <pnp:Folder Name="TestFolder1" />
+            <pnp:Folder Name="TestFolder0" />
+            <pnp:Folder Name="TestFolder3" />
+            <pnp:Folder Name="TestFolder5" />
+            <pnp:Folder Name="TestFolder9" />
+            <pnp:Folder Name="TestFolder6">
+              <pnp:Folder Name="subFolder0" />
+              <pnp:Folder Name="subFolder1" />
+              <pnp:Folder Name="subFolder2" />
+              <pnp:Folder Name="subFolder4" />
+              <pnp:Folder Name="subFolder3" />
+            </pnp:Folder>
+            <pnp:Folder Name="TestFolder0">
+              <pnp:Folder Name="subFolder4" />
+              <pnp:Folder Name="subFolder1" />
+              <pnp:Folder Name="subFolder2" />
+              <pnp:Folder Name="subFolder3" />
+              <pnp:Folder Name="subFolder0" />
+            </pnp:Folder>
+            <pnp:Folder Name="TestFolder3" />
+            <pnp:Folder Name="TestFolder4">
+              <pnp:Folder Name="subFolder2" />
+              <pnp:Folder Name="subFolder4" />
+              <pnp:Folder Name="subFolder0" />
+              <pnp:Folder Name="subFolder3" />
+              <pnp:Folder Name="subFolder1" />
+            </pnp:Folder>
+            <pnp:Folder Name="TestFolder7" />
+            <pnp:Folder Name="TestFolder9" />
+            <pnp:Folder Name="TestFolder5" />
+            <pnp:Folder Name="TestFolder8">
+              <pnp:Folder Name="subFolder2" />
+              <pnp:Folder Name="subFolder4" />
+              <pnp:Folder Name="subFolder0" />
+              <pnp:Folder Name="subFolder1" />
+              <pnp:Folder Name="subFolder3" />
+            </pnp:Folder>
+            <pnp:Folder Name="TestFolder1" />
+            <pnp:Folder Name="TestFolder2">
+              <pnp:Folder Name="subFolder4" />
+              <pnp:Folder Name="subFolder0" />
+              <pnp:Folder Name="subFolder1" />
+              <pnp:Folder Name="subFolder3" />
+              <pnp:Folder Name="subFolder2" />
+            </pnp:Folder>
+            <pnp:Folder Name="TestFolder2">
+              <pnp:Security>
+                <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="true">
+                  <pnp:RoleAssignment Principal="Excel Services Viewers" RoleDefinition="View Only" />
+                  <pnp:RoleAssignment Principal="devel Owners" RoleDefinition="Full Control" />
+                  <pnp:RoleAssignment Principal="devel Visitors" RoleDefinition="Read" />
+                  <pnp:RoleAssignment Principal="devel Members" RoleDefinition="Edit" />
+                </pnp:BreakRoleInheritance>
+              </pnp:Security>
+            </pnp:Folder>
+            <pnp:Folder Name="TestFolder9" />
+            <pnp:Folder Name="TestFolder6">
+              <pnp:Security>
+                <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="true">
+                  <pnp:RoleAssignment Principal="Excel Services Viewers" RoleDefinition="View Only" />
+                  <pnp:RoleAssignment Principal="devel Owners" RoleDefinition="Full Control" />
+                  <pnp:RoleAssignment Principal="devel Visitors" RoleDefinition="Read" />
+                  <pnp:RoleAssignment Principal="devel Members" RoleDefinition="Edit" />
+                </pnp:BreakRoleInheritance>
+              </pnp:Security>
+            </pnp:Folder>
+            <pnp:Folder Name="TestFolder8">
+              <pnp:Security>
+                <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="true">
+                  <pnp:RoleAssignment Principal="Excel Services Viewers" RoleDefinition="View Only" />
+                  <pnp:RoleAssignment Principal="devel Owners" RoleDefinition="Full Control" />
+                  <pnp:RoleAssignment Principal="devel Visitors" RoleDefinition="Read" />
+                  <pnp:RoleAssignment Principal="devel Members" RoleDefinition="Edit" />
+                </pnp:BreakRoleInheritance>
+              </pnp:Security>
+            </pnp:Folder>
+            <pnp:Folder Name="TestFolder4">
+              <pnp:Security>
+                <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="true">
+                  <pnp:RoleAssignment Principal="Excel Services Viewers" RoleDefinition="View Only" />
+                  <pnp:RoleAssignment Principal="devel Owners" RoleDefinition="Full Control" />
+                  <pnp:RoleAssignment Principal="devel Visitors" RoleDefinition="Read" />
+                  <pnp:RoleAssignment Principal="devel Members" RoleDefinition="Edit" />
+                </pnp:BreakRoleInheritance>
+              </pnp:Security>
+            </pnp:Folder>
+            <pnp:Folder Name="TestFolder0">
+              <pnp:Security>
+                <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="true">
+                  <pnp:RoleAssignment Principal="Excel Services Viewers" RoleDefinition="View Only" />
+                  <pnp:RoleAssignment Principal="devel Owners" RoleDefinition="Full Control" />
+                  <pnp:RoleAssignment Principal="devel Visitors" RoleDefinition="Read" />
+                  <pnp:RoleAssignment Principal="devel Members" RoleDefinition="Edit" />
+                </pnp:BreakRoleInheritance>
+              </pnp:Security>
+            </pnp:Folder>
+            <pnp:Folder Name="TestFolder3" />
+            <pnp:Folder Name="TestFolder1" />
+            <pnp:Folder Name="TestFolder5" />
+            <pnp:Folder Name="TestFolder7" />
+            <pnp:Folder Name="TestFolder6">
+              <pnp:Folder Name="subFolder4" />
+              <pnp:Folder Name="subFolder3" />
+              <pnp:Folder Name="subFolder0" />
+              <pnp:Folder Name="subFolder1" />
+              <pnp:Folder Name="subFolder2" />
+              <pnp:Security>
+                <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="true">
+                  <pnp:RoleAssignment Principal="Excel Services Viewers" RoleDefinition="View Only" />
+                  <pnp:RoleAssignment Principal="devel Owners" RoleDefinition="Full Control" />
+                  <pnp:RoleAssignment Principal="devel Visitors" RoleDefinition="Read" />
+                  <pnp:RoleAssignment Principal="devel Members" RoleDefinition="Edit" />
+                </pnp:BreakRoleInheritance>
+              </pnp:Security>
+            </pnp:Folder>
+            <pnp:Folder Name="TestFolder1" />
+            <pnp:Folder Name="TestFolder8">
+              <pnp:Folder Name="subFolder1" />
+              <pnp:Folder Name="subFolder3" />
+              <pnp:Folder Name="subFolder0" />
+              <pnp:Folder Name="subFolder4" />
+              <pnp:Folder Name="subFolder2" />
+              <pnp:Security>
+                <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="true">
+                  <pnp:RoleAssignment Principal="Excel Services Viewers" RoleDefinition="View Only" />
+                  <pnp:RoleAssignment Principal="devel Owners" RoleDefinition="Full Control" />
+                  <pnp:RoleAssignment Principal="devel Visitors" RoleDefinition="Read" />
+                  <pnp:RoleAssignment Principal="devel Members" RoleDefinition="Edit" />
+                </pnp:BreakRoleInheritance>
+              </pnp:Security>
+            </pnp:Folder>
+            <pnp:Folder Name="TestFolder4">
+              <pnp:Folder Name="subFolder4" />
+              <pnp:Folder Name="subFolder3" />
+              <pnp:Folder Name="subFolder0" />
+              <pnp:Folder Name="subFolder1" />
+              <pnp:Folder Name="subFolder2" />
+              <pnp:Security>
+                <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="true">
+                  <pnp:RoleAssignment Principal="Excel Services Viewers" RoleDefinition="View Only" />
+                  <pnp:RoleAssignment Principal="devel Owners" RoleDefinition="Full Control" />
+                  <pnp:RoleAssignment Principal="devel Visitors" RoleDefinition="Read" />
+                  <pnp:RoleAssignment Principal="devel Members" RoleDefinition="Edit" />
+                </pnp:BreakRoleInheritance>
+              </pnp:Security>
+            </pnp:Folder>
+            <pnp:Folder Name="TestFolder3" />
+            <pnp:Folder Name="TestFolder2">
+              <pnp:Folder Name="subFolder2" />
+              <pnp:Folder Name="subFolder4" />
+              <pnp:Folder Name="subFolder0" />
+              <pnp:Folder Name="subFolder1" />
+              <pnp:Folder Name="subFolder3" />
+              <pnp:Security>
+                <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="true">
+                  <pnp:RoleAssignment Principal="Excel Services Viewers" RoleDefinition="View Only" />
+                  <pnp:RoleAssignment Principal="devel Owners" RoleDefinition="Full Control" />
+                  <pnp:RoleAssignment Principal="devel Visitors" RoleDefinition="Read" />
+                  <pnp:RoleAssignment Principal="devel Members" RoleDefinition="Edit" />
+                </pnp:BreakRoleInheritance>
+              </pnp:Security>
+            </pnp:Folder>
+            <pnp:Folder Name="TestFolder7" />
+            <pnp:Folder Name="TestFolder9" />
+            <pnp:Folder Name="TestFolder0">
+              <pnp:Folder Name="subFolder4" />
+              <pnp:Folder Name="subFolder0" />
+              <pnp:Folder Name="subFolder2" />
+              <pnp:Folder Name="subFolder3" />
+              <pnp:Folder Name="subFolder1" />
+              <pnp:Security>
+                <pnp:BreakRoleInheritance CopyRoleAssignments="false" ClearSubscopes="true">
+                  <pnp:RoleAssignment Principal="Excel Services Viewers" RoleDefinition="View Only" />
+                  <pnp:RoleAssignment Principal="devel Owners" RoleDefinition="Full Control" />
+                  <pnp:RoleAssignment Principal="devel Visitors" RoleDefinition="Read" />
+                  <pnp:RoleAssignment Principal="devel Members" RoleDefinition="Edit" />
+                </pnp:BreakRoleInheritance>
+              </pnp:Security>
+            </pnp:Folder>
+            <pnp:Folder Name="TestFolder5" />
+          </pnp:Folders>
         </pnp:ListInstance>
       </pnp:Lists>
     </pnp:ProvisioningTemplate>
