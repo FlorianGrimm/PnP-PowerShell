@@ -5,11 +5,22 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## [2.27.1806.0]
+## [2.28.1807.0] Unreleased
 ### Added
 
 ### Changed
+
+### Deprecated
+
+### Contributors
+
+## [2.27.1806.0]
+### Added
+- Added Grant-PnPTenantServicePrincipalPermission to explicitely grant a permission on a resource for the tenant.
+
+### Changed
 - Fixed edge cases where progress sent to PowerShell would be null, causing the provisioning of a template to end prematurely.
+- Fixed Unregister-PnPHubSite where you could not unregister a hub site if the site was deleted before unregistering
 
 ### Deprecated
 
